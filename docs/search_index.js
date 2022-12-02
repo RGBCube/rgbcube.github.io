@@ -1,4 +1,4 @@
-var searchModuleIndex = ["README","docs",];
+var searchModuleIndex = ["README",];
 var searchIndex = [];
-var searchModuleData = [["","index.html"],["","docs.html"],];
+var searchModuleData = [["","index.html"],];
 var searchData = [];
