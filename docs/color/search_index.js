@@ -1,0 +1,4 @@
+var searchModuleIndex = ["README","color",];
+var searchIndex = ["Color","print_bg","println_bg","rgb","hex","Brush","BrushParams","new_brush","new_brush_pointer","Style","print","println",];
+var searchModuleData = [["","index.html"],["","color.html"],];
+var searchData = [["color","","color.html#Color","interface "],["color","","color.html#Color.print_bg","fn (Color)"],["color","","color.html#Color.println_bg","fn (Color)"],["color","","color.html#rgb","fn "],["color","","color.html#hex","fn "],["color","","color.html#Brush","interface "],["color","","color.html#BrushParams","struct "],["color","","color.html#new_brush","fn "],["color","","color.html#new_brush_pointer","fn "],["color","","color.html#Style","interface "],["color","","color.html#Style.print","fn (Style)"],["color","","color.html#Style.println","fn (Style)"],];
