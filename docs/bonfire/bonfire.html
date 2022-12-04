@@ -96,18 +96,74 @@ SOFTWARE.
 
 </section>
 
-						<section id="hello_world" class="doc-node">
-							<div class="title"><h2>fn hello_world <a href="#hello_world">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token function">hello_world</span><span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-<p>hello_world prints &quot;Hello, world!&quot; to the console.</p>
+						<section id="Snowflake" class="doc-node">
+							<div class="title"><h2>type Snowflake <a href="#Snowflake">#</a></h2></div><pre class="signature"><code><span class="token keyword">type</span> Snowflake <span class="token operator">=</span> <span class="token builtin">u64</span></code></pre>
+<p>Snowflake is a Discord snowflake ID. It holds the time the object was created, the ID of the worker that created it,
+the ID of the process that created it, and a sequence number.</p>
+
+</section>
+						<section id="Snowflake.created_at" class="doc-node">
+							<div class="title"><h2>fn (Snowflake) created_at <a href="#Snowflake.created_at">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">created_at</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Time</code></pre>
+<p>created_at returns the time the Snowflake was created at.</p>
+
+</section>
+						<section id="Snowflake.worker_id" class="doc-node">
+							<div class="title"><h2>fn (Snowflake) worker_id <a href="#Snowflake.worker_id">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">worker_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">u8</span></code></pre>
+<p>worker_id returns the ID of the worker that created the Snowflake.</p>
+
+</section>
+						<section id="Snowflake.process_id" class="doc-node">
+							<div class="title"><h2>fn (Snowflake) process_id <a href="#Snowflake.process_id">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">process_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">u8</span></code></pre>
+<p>process_id returns the ID of the process that created the Snowflake.</p>
+
+</section>
+						<section id="Snowflake.sequence_number" class="doc-node">
+							<div class="title"><h2>fn (Snowflake) sequence_number <a href="#Snowflake.sequence_number">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">sequence_number</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">u16</span></code></pre>
+<p>sequence_number returns the sequence number of the Snowflake (For every Snowflake that
+is generated in the process, the sequence number is incremented by 1).</p>
+
+</section>
+						<section id="Time" class="doc-node">
+							<div class="title"><h2>type Time <a href="#Time">#</a></h2></div><pre class="signature"><code><span class="token keyword">type</span> Time <span class="token operator">=</span> time<span class="token punctuation">.</span>Time</code></pre>
+<p>Time is a time.Time that can be formatted as a Discord timestamp.</p>
+
+</section>
+						<section id="Time.format" class="doc-node">
+							<div class="title"><h2>fn (Time) format <a href="#Time.format">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>t Time<span class="token punctuation">)</span> <span class="token function">format</span><span class="token punctuation">(</span>format TimeFormat<span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
+<p>format returns a Discord representation of the time in the given format.</p>
+
+</section>
+						<section id="TimeFormat" class="doc-node">
+							<div class="title"><h2>enum TimeFormat <a href="#TimeFormat">#</a></h2></div><pre class="signature"><code><span class="token keyword">enum</span> TimeFormat <span class="token keyword">as</span> <span class="token builtin">u8</span> <span class="token punctuation">{</span>
+	short_time <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`t`</span><span class="token punctuation">)</span> <span class="token comment">// 21:27</span>
+	long_time <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`T`</span><span class="token punctuation">)</span> <span class="token comment">// 21:27:42</span>
+	short_date <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`d`</span><span class="token punctuation">)</span> <span class="token comment">// 4/12/2022</span>
+	long_date <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`D`</span><span class="token punctuation">)</span> <span class="token comment">// 4 December 2022</span>
+	short_date_time <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`f`</span><span class="token punctuation">)</span> <span class="token comment">// 4 December 2022 21:27</span>
+	long_date_time <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`F`</span><span class="token punctuation">)</span> <span class="token comment">// Sunday, 4 December 2022 21:27</span>
+	relative <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`R`</span><span class="token punctuation">)</span> <span class="token comment">// 2 days ago, Now, etc.</span>
+<span class="token punctuation">}</span></code></pre>
+<p>TimeFormat is an enum of all possible Discord timestamp formats.</p>
 
 </section>
 
           <div class="footer">
-            Powered by vdoc. Generated on: 4 Dec 2022 17:25:37
+            Powered by vdoc. Generated on: 4 Dec 2022 18:50:33
           </div>
         </div>
         <div class="doc-toc"><ul><li class="open"><a href="#readme_bonfire">README</a></li>
-<li class="open"><a href="#hello_world">fn hello_world</a>        <ul>
+<li class="open"><a href="#Snowflake">type Snowflake</a>        <ul>
+<li><a href="#Snowflake.created_at">fn created_at</a></li>
+<li><a href="#Snowflake.worker_id">fn worker_id</a></li>
+<li><a href="#Snowflake.process_id">fn process_id</a></li>
+<li><a href="#Snowflake.sequence_number">fn sequence_number</a></li>
+</ul>
+</li>
+<li class="open"><a href="#Time">type Time</a>        <ul>
+<li><a href="#Time.format">fn format</a></li>
+</ul>
+</li>
+<li class="open"><a href="#TimeFormat">enum TimeFormat</a>        <ul>
 </ul>
 </li>
 </ul></div>
