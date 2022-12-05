@@ -98,8 +98,8 @@ SOFTWARE.
 
 						<section id="Snowflake" class="doc-node">
 							<div class="title"><h2>type Snowflake <a href="#Snowflake">#</a></h2></div><pre class="signature"><code><span class="token keyword">type</span> Snowflake <span class="token operator">=</span> <span class="token builtin">u64</span></code></pre>
-<p>Snowflake is a Discord snowflake ID. It holds the time the object was created, the ID of the worker that created it,
-the ID of the process that created it, and a sequence number.</p>
+<p>Snowflake is a Discord ID. It holds the time the object was created, the ID of the worker that created it, the
+ID of the process that created it, and a sequence number.</p>
 
 </section>
 						<section id="Snowflake.created_at" class="doc-node">
@@ -119,8 +119,8 @@ the ID of the process that created it, and a sequence number.</p>
 </section>
 						<section id="Snowflake.sequence_number" class="doc-node">
 							<div class="title"><h2>fn (Snowflake) sequence_number <a href="#Snowflake.sequence_number">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>s Snowflake<span class="token punctuation">)</span> <span class="token function">sequence_number</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">u16</span></code></pre>
-<p>sequence_number returns the sequence number of the Snowflake (For every Snowflake that
-is generated in the process, the sequence number is incremented by 1).</p>
+<p>sequence_number returns the sequence number of the Snowflake (For every Snowflake
+that is generated in the process, the sequence number is incremented by 1.).</p>
 
 </section>
 						<section id="Time" class="doc-node">
@@ -131,7 +131,7 @@ is generated in the process, the sequence number is incremented by 1).</p>
 						<section id="Time.format" class="doc-node">
 							<div class="title"><h2>fn (Time) format <a href="#Time.format">#</a></h2></div><pre class="signature"><code><span class="token keyword">fn</span> <span class="token punctuation">(</span>t Time<span class="token punctuation">)</span> <span class="token function">format</span><span class="token punctuation">(</span>format TimeFormat<span class="token punctuation">)</span> <span class="token builtin">string</span></code></pre>
 <p>format returns a Discord representation of the time in the given format.<br>
-E.g. &lt;t:1670178420:f&gt; for 4 December 2022 21:27.</p>
+E.g. &lt;t:1670178420:f&gt; for TimeFormat.short_date_time ran on a time of 1670178420.</p>
 
 </section>
 						<section id="TimeFormat" class="doc-node">
@@ -144,12 +144,13 @@ E.g. &lt;t:1670178420:f&gt; for 4 December 2022 21:27.</p>
 	long_date_time <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`F`</span><span class="token punctuation">)</span> <span class="token comment">// Sunday, 4 December 2022 21:27</span>
 	relative <span class="token operator">=</span> <span class="token builtin">u8</span><span class="token punctuation">(</span><span class="token char">`R`</span><span class="token punctuation">)</span> <span class="token comment">// 2 days ago, Now, etc.</span>
 <span class="token punctuation">}</span></code></pre>
-<p>TimeFormat is an enum of all possible Discord timestamp formats.</p>
+<p>TimeFormat is an enum of all possible Discord timestamp formats.<br>
+See <a href="https://discord.com/developers/docs/reference#message-formatting-timestamp-styles">https://discord.com/developers/docs/reference#message-formatting-timestamp-styles</a>.</p>
 
 </section>
 
           <div class="footer">
-            Powered by vdoc. Generated on: 5 Dec 2022 15:37:23
+            Powered by vdoc. Generated on: 5 Dec 2022 15:42:02
           </div>
         </div>
         <div class="doc-toc"><ul><li class="open"><a href="#readme_bonfire">README</a></li>
