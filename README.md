@@ -2,6 +2,8 @@
 
 This is my homepage. Nothing to see here right now.
 
+## License
+
 ```
 Copyright (C) RGBCube  2023-present
 
