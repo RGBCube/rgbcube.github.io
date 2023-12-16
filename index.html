@@ -26,6 +26,8 @@
 
 <body>
   <style>
+    /* STYLING */
+
     @font-face {
       font-family: "Bai Jamjuree";
       font-weight: 700;
@@ -33,9 +35,9 @@
     }
 
     html {
-      background-color: #1D2021;
-      font-family: 'Bai Jamjuree', sans-serif;
-      font-size: 3em;
+      background-color: #000000;
+      font-family: "Bai Jamjuree", sans;
+      font-size: 300%;
     }
 
     a {
@@ -43,68 +45,139 @@
       text-decoration-line: none;
     }
 
-    .button-frame {
+    .frame {
       background-color: #FFFFFF;
 
       width: min-content;
-      align: center;
 
-      padding: 0 .2em;
+      padding: 0 .3em;
       border-radius: 1em;
     }
 
-    .button-frame:hover {
+    .frame:hover {
       background-color: #FFFF00;
+    }
+
+    /* POSITIONING */
+
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+    }
+
+    .scene {
+      height: 100%;
+      width: 100%;
+      perspective: 15em;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cube {
+      height: 5em;
+      width: 5em;
+
+      position: relative;
+
+      transform: translateZ(-2.5em);
+      transform-style: preserve-3d;
+    }
+
+    .face {
+      /* REMOVE */
+      opacity: 60%;
+      /* REMOVE */
+      background-color: red;
+
+      width: 5em;
+      height: 5em;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+    }
+
+    .front {
+      transform: rotateY(0deg) translateZ(2.5em);
+    }
+
+    .top {
+      transform: rotateX(90deg) translateZ(2.5em);
+    }
+
+    .back {
+      transform: rotateY(180deg) translateZ(2.5em);
+    }
+
+    .bottom {
+      transform: rotateX(-90deg) translateZ(2.5em);
+    }
+
+    .right {
+      transform: rotateY(90deg) translateZ(2.5em);
+    }
+
+    .left {
+      transform: rotateY(-90deg) translateZ(2.5em);
     }
   </style>
 
-  <div class="cube">
-    <div class="cube cube-face-front">
-      <a href="/contact">
-        <div class="button-frame">
-          <p>contact</p>
-        </div>
-      </a>
-    </div>
+  <div class="scene">
+    <div class="cube">
+      <div class="face front">
+        <a href="/contact">
+          <div class="frame">
+            <p>contact</p>
+          </div>
+        </a>
+      </div>
 
-    <div class="cube cube-face-top">
-      <a href="https://github.com/RGBCube">
-        <div class="button-frame">
-          <p>github</p>
-        </div>
-      </a>
-    </div>
+      <div class="face top">
+        <a href="https://github.com/RGBCube">
+          <div class="frame">
+            <p>github</p>
+          </div>
+        </a>
+      </div>
 
-    <div class="cube cube-face-back">
-      <a href="/">
-        <div class="button-frame">
-          <p></p>
-        </div>
-      </a>
-    </div>
+      <div class="face back">
+        <a href="/">
+          <div class="frame">
+            <p></p>
+          </div>
+        </a>
+      </div>
 
-    <div class="cube cube-face-bottom">
-      <a href="/">
-        <div class="button-frame">
-          <p></p>
-        </div>
-      </a>
-    </div>
+      <div class="face bottom">
+        <a href="/">
+          <div class="frame">
+            <p></p>
+          </div>
+        </a>
+      </div>
 
-    <div class="cube cube-face-right">
-      <a href="/">
-        <div class="button-frame">
-          <p></p>
-        </div>
-      </a>
-    </div>
+      <div class="face right">
+        <a href="/">
+          <div class="frame">
+            <p></p>
+          </div>
+        </a>
+      </div>
 
-    <div class="cube cube-face-left">
-      <a href="/">
-        <div class="button-frame">
-          <p></p>
-        </div>
-      </a>
+      <div class="face left">
+        <a href="/">
+          <div class="frame">
+            <p></p>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </body>
