@@ -180,6 +180,93 @@
       </div>
     </div>
   </div>
+
+  <script>
+    class Quaternion {
+      constructor(x, y, z, w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+      }
+
+      static multiply(q1, q2) {
+        return new Quaternion(
+          q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
+          q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x,
+          q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w,
+          q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z,
+        )
+      }
+
+      static fromAxisAngle(axis, angle) {
+        const halfAngle = angle / 2;
+        const sinHalfAngle = Math.sin(halfAngle);
+        const cosHalfAngle = Math.cos(halfAngle);
+        return new Quaternion(
+          axis.x * sinHalfAngle,
+          axis.y * sinHalfAngle,
+          axis.z * sinHalfAngle,
+          cosHalfAngle
+        );
+      }
+
+      normalize() {
+        const length = Math.sqrt(
+          this.x ** 2 + this.y ** 2 + this.z ** 2 + this.w ** 2
+        );
+
+        this.x /= length;
+        this.y /= length;
+        this.z /= length;
+        this.w /= length;
+
+        return this;
+      }
+    }
+
+    const cube = document.querySelector(".cube");
+
+    let isMouseDown = false;
+
+    let lastX = 0;
+    let lastY = 0;
+
+    let rotationVelocity = new Quaternion(0, 0, 0, 1);
+
+    document.addEventListener("mousemove", (e) => {
+      if (isMouseDown) {
+        const deltaX = e.clientX - lastX;
+        const deltaY = e.clientY - lastY;
+
+        const axis = new Quaternion(deltaY, deltaX, 0, 0).normalize();
+        const angle = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * 0.01;
+
+        const deltaRotation = Quaternion.fromAxisAngle(axis, angle);
+        rotationVelocity = Quaternion.multiply(deltaRotation, rotationVelocity);
+
+        cube.style.transform = `rotate3d(${rotationVelocity.x}, ${rotationVelocity.y}, ${rotationVelocity.z}, ${rotationVelocity.w}rad)`;
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+      }
+    });
+
+    document.addEventListener("mousedown", (e) => {
+      isMouseDown = true;
+
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+
+    document.addEventListener("mouseup", () => {
+      isMouseDown = false;
+    });
+
+    document.addEventListener("mouseleave", () => {
+      isMouseDown = false;
+    });
+  </script>
 </body>
 
 </html>
