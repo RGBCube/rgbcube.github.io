@@ -88,10 +88,8 @@
     }
 
     .face {
-      /* REMOVE */
-      opacity: 60%;
-      /* REMOVE */
-      background-color: red;
+      background-size: cover;
+      background-position: center;
 
       width: 5em;
       height: 5em;
@@ -106,26 +104,32 @@
 
     .front {
       transform: rotateY(0deg) translateZ(2.5em);
+      background-image: url(front.png);
     }
 
     .top {
       transform: rotateX(90deg) translateZ(2.5em);
+      background-image: url(top.png);
     }
 
     .back {
       transform: rotateY(180deg) translateZ(2.5em);
+      background-image: url(back.png);
     }
 
     .bottom {
       transform: rotateX(-90deg) translateZ(2.5em);
+      background-image: url(bottom.png);
     }
 
     .right {
       transform: rotateY(90deg) translateZ(2.5em);
+      background-image: url(right.png);
     }
 
     .left {
       transform: rotateY(-90deg) translateZ(2.5em);
+      background-image: url(left.png);
     }
   </style>
 
