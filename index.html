@@ -189,89 +189,124 @@
 
   <script>
     class Quaternion {
-      constructor(x, y, z, w) {
+      static __cube = document.querySelector(".cube");
+
+      static up = new Quaternion({x: 0, y: 1, z: 0, w: 0});
+      static right = new Quaternion({x: 1, y: 0, z: 0, w: 0});
+
+      constructor({x, y, z, w}) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.w = w;
       }
 
-      static multiply(q1, q2) {
-        return new Quaternion(
-          q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
-          q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x,
-          q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w,
-          q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z,
-        )
+      static fromAngleAxis(angle, axis) {
+        axis.normalize();
+
+        const half = angle / 2;
+
+        const sinHalf = Math.sin(half);
+        const cosHalf = Math.cos(half);
+
+        const x = axis.x * sinHalf;
+        const y = axis.y * sinHalf;
+        const z = axis.z * sinHalf;
+        const w = cosHalf;
+
+        return new Quaternion({x: x, y: y, z: z, w: w})
       }
 
-      static fromAxisAngle(axis, angle) {
-        const halfAngle = angle / 2;
-        const sinHalfAngle = Math.sin(halfAngle);
-        const cosHalfAngle = Math.cos(halfAngle);
-        return new Quaternion(
-          axis.x * sinHalfAngle,
-          axis.y * sinHalfAngle,
-          axis.z * sinHalfAngle,
-          cosHalfAngle
-        );
+      apply() {
+        Quaternion.__cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w}rad)`;
       }
 
       normalize() {
-        const length = Math.sqrt(
-          this.x ** 2 + this.y ** 2 + this.z ** 2 + this.w ** 2
-        );
+        const length = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
 
-        this.x /= length;
-        this.y /= length;
-        this.z /= length;
-        this.w /= length;
+        if (length != 0) {
+          this.x /= length;
+          this.y /= length;
+          this.z /= length;
+        }
+      }
 
-        return this;
+      static multiply(q, r) {
+        return new Quaternion({
+          x: q.w * r.x + q.x * r.w + q.y * r.z - q.z * r.y,
+          y: q.w * r.y - q.x * r.z + q.y * r.w + q.z * r.x,
+          z: q.w * r.z + q.x * r.y - q.y * r.x + q.z * r.w,
+          w: q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z,
+        });
       }
     }
 
-    const cube = document.querySelector(".cube");
+    let friction = 0.01;
+    let sensitivity = 0.001;
 
-    let isMouseDown = false;
+    const orientation = {
+      __value: new Quaternion({x: 0, y: 0, z: 0, w: 1}),
 
-    let lastX = 0;
-    let lastY = 0;
+      set(value) {
+        console.log(value);
+        this.__value = value;
+        this.__value.apply();
+      },
 
-    let rotationVelocity = new Quaternion(0, 0, 0, 1);
+      get() {
+        return this.__value;
+      },
+    };
 
-    document.addEventListener("mousemove", (e) => {
-      if (isMouseDown) {
-        const deltaX = e.clientX - lastX;
-        const deltaY = e.clientY - lastY;
+    (() => {
+      const mouse = {
+        down: false,
+        previous: {
+          x: 0,
+          y: 0,
+        },
+      };
 
-        const axis = new Quaternion(deltaY, deltaX, 0, 0).normalize();
-        const angle = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * 0.01;
+      let velocity = 0;
 
-        const deltaRotation = Quaternion.fromAxisAngle(axis, angle);
-        rotationVelocity = Quaternion.multiply(deltaRotation, rotationVelocity);
+      const mouseLeaveListener = (event) => {
+        mouse.down = false;
+        mouse.previous = {
+          x: event.clientX,
+          y: event.clientY,
+        };
+      };
 
-        cube.style.transform = `rotate3d(${rotationVelocity.x}, ${rotationVelocity.y}, ${rotationVelocity.z}, ${rotationVelocity.w}rad)`;
+      document.addEventListener("mouseleave", mouseLeaveListener);
+      document.addEventListener("mouseup", mouseLeaveListener);
 
-        lastX = e.clientX;
-        lastY = e.clientY;
-      }
-    });
+      document.addEventListener("mousedown", () => {
+        mouse.down = true;
+      });
 
-    document.addEventListener("mousedown", (e) => {
-      isMouseDown = true;
+      document.addEventListener("mousemove", (event) => {
+        if (mouse.down) {
+          const newMouse = {
+            x: event.clientX,
+            y: event.clientY,
+          }
 
-      lastX = e.clientX;
-      lastY = e.clientY;
-    });
+          const delta = {
+            x: newMouse.x - mouse.previous.x,
+            y: newMouse.y - mouse.previous.y,
+          }
 
-    document.addEventListener("mouseup", () => {
-      isMouseDown = false;
-    });
+          mouse.previous = newMouse
 
-    document.addEventListener("mouseleave", () => {
-      isMouseDown = false;
-    });
+          const rotation = Quaternion.multiply(
+            Quaternion.fromAngleAxis(delta.x * sensitivity, Quaternion.up),
+            Quaternion.fromAngleAxis(delta.y * sensitivity, Quaternion.right),
+          );
+
+          orientation.set(Quaternion.multiply(orientation.get(), rotation))
+        }
+      });
+    })();
   </script>
 </body>
 
