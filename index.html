@@ -238,8 +238,12 @@
         this.z = z;
       }
 
+      length() {
+        return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+      }
+
       normalize() {
-        const length = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+        const length = this.length();
 
         if (length != 0) {
           this.x /= length;
