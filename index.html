@@ -224,13 +224,45 @@
   </div>
 
   <script>
-    class Quaternion {
-      static __cube = document.querySelector(".cube");
+    const __cube = document.querySelector(".cube");
 
-      static up = new Quaternion({x: 0, y: 1, z: 0, w: 0});
-      static right = new Quaternion({x: 1, y: 0, z: 0, w: 0});
+    class Vec3 {
+      static up = new Vec3(0, 1, 0);
+      static right = new Vec3(1, 0, 0);
 
-      constructor({x, y, z, w}) {
+      constructor(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+      }
+
+      normalize() {
+        const length = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+
+        if (length != 0) {
+          this.x /= length;
+          this.y /= length;
+          this.z /= length;
+        }
+      }
+
+      static sub(v, t) {
+        return new Vec3(
+          v.x - t.x,
+          v.y - t.y,
+          v.z - t.z,
+        )
+      }
+    }
+
+    class Vec2 extends Vec3 {
+      constructor(x, y) {
+        super(x, y, 0)
+      }
+    }
+
+    class Quat {
+      constructor(x, y, z, w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -250,30 +282,20 @@
         const z = axis.z * sinHalf;
         const w = cosHalf;
 
-        return new Quaternion({x: x, y: y, z: z, w: w});
+        return new Quat(x, y, z, w);
+      }
+
+      static mul(q, r) {
+        return new Quat(
+          q.w * r.x + q.x * r.w + q.y * r.z - q.z * r.y,
+          q.w * r.y - q.x * r.z + q.y * r.w + q.z * r.x,
+          q.w * r.z + q.x * r.y - q.y * r.x + q.z * r.w,
+          q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z,
+        );
       }
 
       apply() {
-        Quaternion.__cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w}rad)`;
-      }
-
-      normalize() {
-        const length = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
-
-        if (length != 0) {
-          this.x /= length;
-          this.y /= length;
-          this.z /= length;
-        }
-      }
-
-      static multiply(q, r) {
-        return new Quaternion({
-          x: q.w * r.x + q.x * r.w + q.y * r.z - q.z * r.y,
-          y: q.w * r.y - q.x * r.z + q.y * r.w + q.z * r.x,
-          z: q.w * r.z + q.x * r.y - q.y * r.x + q.z * r.w,
-          w: q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z,
-        });
+        __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w}rad)`;
       }
     }
 
@@ -282,7 +304,7 @@
     let velocity = 0;
 
     const orientation = {
-      __value: new Quaternion({x: 0, y: 0, z: 0, w: 1}),
+      __value: new Quat(0, 0, 0, 1),
 
       set(value) {
         this.__value = value;
@@ -298,10 +320,7 @@
       const mouse = {
         down: false,
         lastMove: window.performance.now(),
-        previous: {
-          x: 0,
-          y: 0,
-        },
+        previous: new Vec2(0, 0),
       };
 
       document.addEventListener("mouseleave", () => {
@@ -312,36 +331,33 @@
         mouse.down = false;
       });
 
-      document.addEventListener("mousedown", () => {
+      document.addEventListener("mousedown", (event) => {
+        // Disables link dragging that occurs when spinning.
+        event.preventDefault();
         mouse.down = true;
       });
 
       document.addEventListener("mousemove", (event) => {
-        if (mouse.down) {
-          const newMouse = {
-            x: event.clientX,
-            y: event.clientY,
-          };
+        if (!mouse.down) return;
 
-          if (window.performance.now() - mouse.lastMove > 100) {
-            mouse.previous = newMouse;
-          }
+        const newMouse = new Vec2(event.clientX, event.clientY);
 
-          const delta = {
-            x: newMouse.x - mouse.previous.x,
-            y: newMouse.y - mouse.previous.y,
-          };
-
+        if (window.performance.now() - mouse.lastMove > 100) {
+          // This is a fresh scroll.
           mouse.previous = newMouse;
-          mouse.lastMove = window.performance.now();
-
-          const rotation = Quaternion.multiply(
-            Quaternion.fromAngleAxis(delta.x * sensitivity, Quaternion.up),
-            Quaternion.fromAngleAxis(delta.y * sensitivity, Quaternion.right),
-          );
-
-          orientation.set(Quaternion.multiply(orientation.get(), rotation));
         }
+
+        const delta = Vec2.sub(newMouse, mouse.previous);
+
+        mouse.previous = newMouse;
+        mouse.lastMove = window.performance.now();
+
+        const rotation = Quat.mul(
+          Quat.fromAngleAxis(delta.x * sensitivity, Vec3.up),
+          Quat.fromAngleAxis(delta.y * sensitivity, Vec3.right),
+        );
+
+        orientation.set(Quat.mul(orientation.get(), rotation));
       });
     })();
   </script>
