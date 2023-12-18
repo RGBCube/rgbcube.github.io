@@ -214,7 +214,7 @@
         const z = axis.z * sinHalf;
         const w = cosHalf;
 
-        return new Quaternion({x: x, y: y, z: z, w: w})
+        return new Quaternion({x: x, y: y, z: z, w: w});
       }
 
       apply() {
@@ -242,13 +242,12 @@
     }
 
     let friction = 0.01;
-    let sensitivity = 0.001;
+    let sensitivity = 0.01;
 
     const orientation = {
       __value: new Quaternion({x: 0, y: 0, z: 0, w: 1}),
 
       set(value) {
-        console.log(value);
         this.__value = value;
         this.__value.apply();
       },
@@ -261,6 +260,7 @@
     (() => {
       const mouse = {
         down: false,
+        lastMove: window.performance.now(),
         previous: {
           x: 0,
           y: 0,
@@ -289,21 +289,26 @@
           const newMouse = {
             x: event.clientX,
             y: event.clientY,
+          };
+
+          if (window.performance.now() - mouse.lastMove > 100) {
+            mouse.previous = newMouse;
           }
 
           const delta = {
             x: newMouse.x - mouse.previous.x,
             y: newMouse.y - mouse.previous.y,
-          }
+          };
 
-          mouse.previous = newMouse
+          mouse.previous = newMouse;
+          mouse.lastMove = window.performance.now();
 
           const rotation = Quaternion.multiply(
             Quaternion.fromAngleAxis(delta.x * sensitivity, Quaternion.up),
             Quaternion.fromAngleAxis(delta.y * sensitivity, Quaternion.right),
           );
 
-          orientation.set(Quaternion.multiply(orientation.get(), rotation))
+          orientation.set(Quaternion.multiply(orientation.get(), rotation));
         }
       });
     })();
