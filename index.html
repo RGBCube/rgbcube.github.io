@@ -104,34 +104,72 @@
       position: absolute;
     }
 
+    .face::after {
+      z-index: -1;
+      content: "";
+      width: inherit;
+      height: inherit;
+      position: absolute;
+    }
+
     .front {
       transform: rotateY(0deg) translateZ(2.5em);
-      background-image: url(front.png);
+      background: linear-gradient(to bottom, cyan, blue);
+    }
+
+    .front::after {
+      background: linear-gradient(to bottom, white, magenta);
+      mask-image: linear-gradient(to left, magenta, transparent);
     }
 
     .top {
       transform: rotateX(90deg) translateZ(2.5em);
-      background-image: url(top.png);
+      background: linear-gradient(to bottom, lime, cyan);
+    }
+
+    .top::after {
+      background: linear-gradient(to bottom, yellow, white);
+      mask-image: linear-gradient(to left, white, transparent);
     }
 
     .back {
       transform: rotateY(180deg) translateZ(2.5em);
-      background-image: url(back.png);
+      background: linear-gradient(to bottom, yellow, red);
+    }
+
+    .back::after {
+      background: linear-gradient(to bottom, lime, black);
+      mask-image: linear-gradient(to left, black, transparent);
     }
 
     .bottom {
       transform: rotateX(-90deg) translateZ(2.5em);
-      background-image: url(bottom.png);
+      background: linear-gradient(to bottom, blue, black);
+    }
+
+    .bottom::after {
+      background: linear-gradient(to bottom, magenta, red);
+      mask-image: linear-gradient(to left, red, transparent);
     }
 
     .right {
       transform: rotateY(90deg) translateZ(2.5em);
-      background-image: url(right.png);
+      background: linear-gradient(to bottom, white, magenta);
+    }
+
+    .right::after {
+      background: linear-gradient(to bottom, yellow, red);
+      mask-image: linear-gradient(to left, red, transparent);
     }
 
     .left {
       transform: rotateY(-90deg) translateZ(2.5em);
-      background-image: url(left.png);
+      background: linear-gradient(to bottom, lime, black);
+    }
+
+    .left::after {
+      background: linear-gradient(to bottom, cyan, blue);
+      mask-image: linear-gradient(to left, blue, transparent);
     }
   </style>
 
