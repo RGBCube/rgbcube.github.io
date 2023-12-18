@@ -277,6 +277,7 @@
 
     let friction = 0.01;
     let sensitivity = 0.01;
+    let velocity = 0;
 
     const orientation = {
       __value: new Quaternion({x: 0, y: 0, z: 0, w: 1}),
@@ -300,8 +301,6 @@
           y: 0,
         },
       };
-
-      let velocity = 0;
 
       document.addEventListener("mouseleave", () => {
         mouse.down = false;
