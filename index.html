@@ -307,16 +307,13 @@
 
       let velocity = 0;
 
-      const mouseLeaveListener = (event) => {
+      document.addEventListener("mouseleave", () => {
         mouse.down = false;
-        mouse.previous = {
-          x: event.clientX,
-          y: event.clientY,
-        };
-      };
+      });
 
-      document.addEventListener("mouseleave", mouseLeaveListener);
-      document.addEventListener("mouseup", mouseLeaveListener);
+      document.addEventListener("mouseup", () => {
+        mouse.down = false;
+      });
 
       document.addEventListener("mousedown", () => {
         mouse.down = true;
