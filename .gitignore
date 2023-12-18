@@ -2,6 +2,7 @@
 
 !.gitignore
 
+!*.gif
 !*.html
 !*.md
 !*.woff2
