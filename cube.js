@@ -80,7 +80,7 @@ class Quat {
   }
 }
 
-let friction = 0.01;
+let friction = 3;
 let sensitivity = 0.01;
 let velocity = 0;
 
@@ -116,7 +116,9 @@ const orientation = {
 
     const newMouse = new Vec3(event.clientX, event.clientY, 0);
 
-    if (window.performance.now() - mouse.lastMove > 100) {
+    const timeDelta = (window.performance.now() - mouse.lastMove) / 1000;
+
+    if (timeDelta > 0.1) {
       // This is a fresh scroll.
       mouse.previous = newMouse;
     }
@@ -133,6 +135,9 @@ const orientation = {
     const rotation = Quat.fromAxis(axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
+
+    angularMomentum.x = axis.x / timeDelta;
+    angularMomentum.y = axis.y / timeDelta;
   };
 
   document.addEventListener("mousemove", handleMove);
@@ -167,7 +172,7 @@ const orientation = {
     const delta = (timestamp - lastUpdate) / 1000;
     lastUpdate = timestamp;
 
-    const axis = angularMomentum;
+    const axis = new Vec3(angularMomentum.x, angularMomentum.y, angularMomentum.z);
     const omega = angularMomentum.length();
     const decay = Math.exp(-delta * friction);
 
@@ -190,7 +195,7 @@ const orientation = {
     axis.normalize();
     axis.scale(theta);
 
-    const rotation = Quat.fromAxis(theta);
+    const rotation = Quat.fromAxis(axis);
 
     if (!mouse.down) orientation.set(Quat.mul(rotation, orientation.get()));
 
