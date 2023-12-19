@@ -7,6 +7,10 @@ class Vec3 {
     this.z = z;
   }
 
+  static zero() {
+    return new Vec(0, 0, 0);
+  }
+
   length() {
     return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
   }
@@ -36,6 +40,14 @@ class Vec3 {
       v.x - t.x,
       v.y - t.y,
       v.z - t.z,
+    )
+  }
+
+  static sum(v, t) {
+    return new Vec3(
+      v.x + t.x,
+      v.y + t.y,
+      v.z + t.z,
     )
   }
 }
@@ -103,12 +115,26 @@ const orientation = {
     previous: null,
   };
 
+  let impulseThisFrame = new Vec3(0, 0, 0);
+
   const handleUp = () => {
     mouse.down = false;
   };
 
   document.addEventListener("mouseup", handleUp);
   document.addEventListener("touchend", handleUp);
+
+  const handleDown = (event) => {
+    // Disables link dragging that occurs when spinning.
+    event.preventDefault();
+
+    mouse.down = true;
+
+    velocity = new Vec3(0, 0, 0);
+  };
+
+  document.addEventListener("mousedown", handleDown);
+  document.addEventListener("touchstart", handleDown);
 
   const handleMove = (event) => {
     if (!mouse.down) return;
@@ -131,6 +157,8 @@ const orientation = {
       .normalize()
       .scale(delta.length() * sensitivity);
 
+    impulseThisFrame = Vec3.sum(impulseThisFrame, axis);
+
     const rotation = Quat.fromAxis(axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
@@ -146,18 +174,6 @@ const orientation = {
     handleMove(event);
   });
 
-  const handleDown = (event) => {
-    // Disables link dragging that occurs when spinning.
-    event.preventDefault();
-
-    mouse.down = true;
-
-    velocity = new Vec3(0, 0, 0);
-  };
-
-  document.addEventListener("mousedown", handleDown);
-  document.addEventListener("touchstart", handleDown);
-
   let lastUpdate = 0;
 
   const updateFrame = (timestamp) => {
@@ -166,31 +182,36 @@ const orientation = {
     const delta = (timestamp - lastUpdate) / 1000;
     lastUpdate = timestamp;
 
-    const decay = Math.exp(-delta * friction);
+    if (mouse.down) {
+      velocity = impulseThisFrame.scale(1 / delta);
+      impulseThisFrame = new Vec3(0, 0, 0);
+    } else {
+      const decay = Math.exp(-delta * friction);
 
-    const effectiveDelta = friction > 0 ? (1 - decay) / friction : delta;
+      const effectiveDelta = friction > 0 ? (1 - decay) / friction : delta;
 
-    let theta = effectiveDelta * velocity.length();
+      let theta = effectiveDelta * velocity.length();
 
-    velocity.x *= decay;
-    velocity.y *= decay;
-    velocity.z *= decay;
+      velocity.x *= decay;
+      velocity.y *= decay;
+      velocity.z *= decay;
 
-    if (friction > 0 && velocity.length() < 0.00001) {
-      theta += velocity.length() / friction;
+      if (friction > 0 && velocity.length() < 0.00001) {
+        theta += velocity.length() / friction;
 
-      velocity.x = 0;
-      velocity.y = 0;
-      velocity.z = 0;
+        velocity.x = 0;
+        velocity.y = 0;
+        velocity.z = 0;
+      }
+
+      const axis = new Vec3(velocity.x, velocity.y, velocity.z)
+        .normalize()
+        .scale(theta);
+
+      const rotation = Quat.fromAxis(axis);
+
+      orientation.set(Quat.mul(rotation, orientation.get()));
     }
-
-    const axis = new Vec3(velocity.x, velocity.y, velocity.z)
-      .normalize()
-      .scale(theta);
-
-    const rotation = Quat.fromAxis(axis);
-
-    if (!mouse.down) orientation.set(Quat.mul(rotation, orientation.get()));
 
     requestAnimationFrame(updateFrame);
   };
