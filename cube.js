@@ -35,12 +35,6 @@ class Vec3 {
   }
 }
 
-class Vec2 extends Vec3 {
-  constructor(x, y) {
-    super(x, y, 0)
-  }
-}
-
 class Quat {
   constructor(x, y, z, w) {
     this.x = x;
@@ -99,13 +93,9 @@ const orientation = {
 (() => {
   const mouse = {
     down: false,
-    lastMove: window.performance.now(),
-    previous: new Vec2(0, 0),
+    lastMove: 0,
+    previous: null,
   };
-
-  document.addEventListener("mouseleave", () => {
-    mouse.down = false;
-  });
 
   document.addEventListener("mouseup", () => {
     mouse.down = false;
@@ -120,19 +110,19 @@ const orientation = {
   document.addEventListener("mousemove", (event) => {
     if (!mouse.down) return;
 
-    const newMouse = new Vec2(event.clientX, event.clientY);
+    const newMouse = new Vec3(event.clientX, event.clientY, 0);
 
     if (window.performance.now() - mouse.lastMove > 100) {
       // This is a fresh scroll.
       mouse.previous = newMouse;
     }
 
-    const delta = Vec2.sub(newMouse, mouse.previous);
+    const delta = Vec3.sub(newMouse, mouse.previous);
 
     mouse.previous = newMouse;
     mouse.lastMove = window.performance.now();
 
-    const axis = new Vec2(-delta.y,delta.x);
+    const axis = new Vec3(-delta.y, delta.x, 0);
     const rotation = Quat.fromAngleAxis(delta.length() * sensitivity, axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
