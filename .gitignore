@@ -4,5 +4,6 @@
 
 !*.gif
 !*.html
+!*.js
 !*.md
 !*.woff2
