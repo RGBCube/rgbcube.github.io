@@ -16,6 +16,18 @@ html {
   font-size: 450%;
 }
 
+@media screen and (max-width: 400px) {
+  html {
+    font-size: 200%;
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 400px) {
+  html {
+    font-size: 300%;
+  }
+}
+
 a {
   color: #000000;
   text-decoration-line: none;
