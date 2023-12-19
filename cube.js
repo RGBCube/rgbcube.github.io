@@ -75,7 +75,7 @@ class Quat {
   }
 
   apply() {
-    __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w}rad)`;
+    __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w * 3.1415}rad)`;
   }
 }
 
