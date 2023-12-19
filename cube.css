@@ -67,7 +67,7 @@ a {
 
   position: relative;
 
-  transform: translateZ(-2.5em);
+  transform: translateZ(-2.498em);
   transform-style: preserve-3d;
 }
 
@@ -87,25 +87,26 @@ a {
 }
 
 .front {
-  transform: rotateY(0deg) translateZ(2.5em);
+  transform: rotateY(0deg) translateZ(2.498em);
 }
 
 .top {
-  transform: rotateX(90deg) translateZ(2.5em);
+  /* Guess what? Yeah, you guessed right. Safari can't render shit. */
+  transform: rotateX(89.99999999999999deg) translateZ(2.498em);
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(2.5em);
+  transform: rotateY(180deg) translateZ(2.498em);
 }
 
 .bottom {
-  transform: rotateX(-90deg) translateZ(2.5em);
+  transform: rotateX(-89.99999999999999deg) translateZ(2.498em);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(2.5em);
+  transform: rotateY(89.99999999999999deg) translateZ(2.498em);
 }
 
 .left {
-  transform: rotateY(-90deg) translateZ(2.5em);
+  transform: rotateY(-89.99999999999999deg) translateZ(2.498em);
 }
