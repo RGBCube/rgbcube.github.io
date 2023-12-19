@@ -1,11 +1,6 @@
 "use strict";
 
-const __cube = document.querySelector(".cube");
-
 class Vec3 {
-  static up = new Vec3(0, 1, 0);
-  static right = new Vec3(1, 0, 0);
-
   constructor(x, y, z) {
     this.x = x;
     this.y = y;
@@ -20,6 +15,8 @@ class Vec3 {
     this.x *= factor;
     this.y *= factor;
     this.z *= factor;
+
+    return this;
   }
 
   normalize() {
@@ -30,6 +27,8 @@ class Vec3 {
       this.y /= length;
       this.z /= length;
     }
+
+    return this;
   }
 
   static sub(v, t) {
@@ -51,6 +50,7 @@ class Quat {
 
   static fromAxis(axis) {
     const angle = axis.length();
+
     axis.normalize();
 
     const half = angle / 2;
@@ -74,10 +74,6 @@ class Quat {
       q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z,
     );
   }
-
-  apply() {
-    __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${Math.acos(this.w) * 2}rad)`;
-  }
 }
 
 let friction = 3;
@@ -85,11 +81,14 @@ let sensitivity = 0.01;
 let velocity = new Vec3(0, 0, 0);
 
 const orientation = {
+  __cube: document.querySelector(".cube"),
   __value: new Quat(0, 0, 0, 1),
 
   set(value) {
     this.__value = value;
-    this.__value.apply();
+
+    const q = this.__value;
+    this.__cube.style.transform = `rotate3d(${q.x}, ${q.y}, ${q.z}, ${Math.acos(q.w) * 2}rad)`;
   },
 
   get() {
@@ -97,7 +96,7 @@ const orientation = {
   },
 };
 
-(() => {
+{
   const mouse = {
     down: false,
     lastMove: 0,
@@ -128,17 +127,13 @@ const orientation = {
     mouse.previous = newMouse;
     mouse.lastMove = window.performance.now();
 
-    const axis = new Vec3(-delta.y, delta.x, 0);
-    axis.normalize();
-    axis.scale(delta.length() * sensitivity);
+    const axis = new Vec3(-delta.y, delta.x, 0)
+      .normalize()
+      .scale(delta.length() * sensitivity);
 
     const rotation = Quat.fromAxis(axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
-
-    console.log(timeDelta);
-    velocity.x += axis.x / timeDelta;
-    velocity.y += axis.y / timeDelta;
   };
 
   document.addEventListener("mousemove", handleMove);
@@ -171,13 +166,11 @@ const orientation = {
     const delta = (timestamp - lastUpdate) / 1000;
     lastUpdate = timestamp;
 
-    const axis = new Vec3(velocity.x, velocity.y, velocity.z);
-    const omega = velocity.length();
     const decay = Math.exp(-delta * friction);
 
     const effectiveDelta = friction > 0 ? (1 - decay) / friction : delta;
 
-    let theta = effectiveDelta * omega;
+    let theta = effectiveDelta * velocity.length();
 
     velocity.x *= decay;
     velocity.y *= decay;
@@ -191,8 +184,9 @@ const orientation = {
       velocity.z = 0;
     }
 
-    axis.normalize();
-    axis.scale(theta);
+    const axis = new Vec3(velocity.x, velocity.y, velocity.z)
+      .normalize()
+      .scale(theta);
 
     const rotation = Quat.fromAxis(axis);
 
@@ -202,4 +196,4 @@ const orientation = {
   };
 
   updateFrame(0);
-})();
+}
