@@ -75,7 +75,7 @@ class Quat {
   }
 
   apply() {
-    __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${this.w * 3.1415}rad)`;
+    __cube.style.transform = `rotate3d(${this.x}, ${this.y}, ${this.z}, ${Math.acos(this.w) * 2}rad)`;
   }
 }
 
@@ -132,11 +132,9 @@ const orientation = {
     mouse.previous = newMouse;
     mouse.lastMove = window.performance.now();
 
-    const rotation = Quat.mul(
-      Quat.fromAngleAxis(delta.x * sensitivity, Vec3.up),
-      Quat.fromAngleAxis(delta.y * sensitivity, Vec3.right),
-    );
+    const axis = new Vec2(-delta.y,delta.x);
+    const rotation = Quat.fromAngleAxis(delta.length() * sensitivity, axis);
 
-    orientation.set(Quat.mul(orientation.get(), rotation));
+    orientation.set(Quat.mul(rotation, orientation.get()));
   });
 })();
