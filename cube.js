@@ -16,6 +16,12 @@ class Vec3 {
     return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
   }
 
+  scale(factor) {
+    this.x *= factor;
+    this.y *= factor;
+    this.z *= factor;
+  }
+
   normalize() {
     const length = this.length();
 
@@ -43,7 +49,8 @@ class Quat {
     this.w = w;
   }
 
-  static fromAngleAxis(angle, axis) {
+  static fromAxis(axis) {
+    const angle = axis.length();
     axis.normalize();
 
     const half = angle / 2;
@@ -120,7 +127,10 @@ const orientation = {
     mouse.lastMove = window.performance.now();
 
     const axis = new Vec3(-delta.y, delta.x, 0);
-    const rotation = Quat.fromAngleAxis(delta.length() * sensitivity, axis);
+    axis.normalize();
+    axis.scale(delta.length() * sensitivity);
+
+    const rotation = Quat.fromAxis(axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
   };
@@ -177,7 +187,10 @@ const orientation = {
       angularMomentum.z = 0;
     }
 
-    const rotation = Quat.fromAngleAxis(theta, axis);
+    axis.normalize();
+    axis.scale(theta);
+
+    const rotation = Quat.fromAxis(theta);
 
     if (!mouse.down) orientation.set(Quat.mul(rotation, orientation.get()));
 
