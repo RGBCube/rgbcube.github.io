@@ -137,6 +137,9 @@ const orientation = {
   document.addEventListener("touchstart", handleDown);
 
   const handleMove = (event) => {
+    // Disables scrolling.
+    event.preventDefault();
+
     if (!mouse.down) return;
 
     const newMouse = new Vec3(event.clientX, event.clientY, 0);
