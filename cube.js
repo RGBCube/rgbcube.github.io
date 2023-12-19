@@ -97,12 +97,14 @@ const orientation = {
     previous: null,
   };
 
-
-  document.addEventListener("mouseup", () => {
+  const handleUp = () => {
     mouse.down = false;
-  });
+  };
 
-  document.addEventListener("mousemove", (event) => {
+  document.addEventListener("mouseup", handleUp);
+  document.addEventListener("touchend", handleUp);
+
+  const handleMove = (event) => {
     if (!mouse.down) return;
 
     const newMouse = new Vec3(event.clientX, event.clientY, 0);
@@ -121,18 +123,31 @@ const orientation = {
     const rotation = Quat.fromAngleAxis(delta.length() * sensitivity, axis);
 
     orientation.set(Quat.mul(rotation, orientation.get()));
+  };
+
+  document.addEventListener("mousemove", handleMove);
+  document.addEventListener("touchmove", (event) => {
+    const delta = event.changedTouches[0];
+
+    event.clientX = delta.clientX;
+    event.clientY = delta.clientY;
+
+    handleMove(event);
   });
 
   let angularMomentum = new Vec3(0, 0, 0);
 
-  document.addEventListener("mousedown", (event) => {
+  const handleDown = (event) => {
     // Disables link dragging that occurs when spinning.
     event.preventDefault();
 
     mouse.down = true;
 
     angularMomentum = new Vec3(0, 0, 0);
-  });
+  };
+
+  document.addEventListener("mousedown", handleDown);
+  document.addEventListener("touchstart", handleDown);
 
   let lastUpdate = 0;
 
