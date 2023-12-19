@@ -111,7 +111,7 @@ const orientation = {
 {
   const mouse = {
     down: false,
-    lastMove: 0,
+    lastMove: -10_000,
     previous: null,
   };
 
@@ -205,6 +205,10 @@ const orientation = {
         velocity.x = 0;
         velocity.y = 0;
         velocity.z = 0;
+      }
+
+      if (window.performance.now() - mouse.lastMove > 10_000) {
+        velocity = new Vec3(1, 1, -1);
       }
 
       const axis = new Vec3(velocity.x, velocity.y, velocity.z)
