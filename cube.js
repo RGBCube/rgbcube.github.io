@@ -82,7 +82,7 @@ class Quat {
 
 let friction = 3;
 let sensitivity = 0.01;
-let velocity = 0;
+let velocity = new Vec3(0, 0, 0);
 
 const orientation = {
   __value: new Quat(0, 0, 0, 1),
@@ -136,8 +136,9 @@ const orientation = {
 
     orientation.set(Quat.mul(rotation, orientation.get()));
 
-    angularMomentum.x = axis.x / timeDelta;
-    angularMomentum.y = axis.y / timeDelta;
+    console.log(timeDelta);
+    velocity.x += axis.x / timeDelta;
+    velocity.y += axis.y / timeDelta;
   };
 
   document.addEventListener("mousemove", handleMove);
@@ -150,15 +151,13 @@ const orientation = {
     handleMove(event);
   });
 
-  let angularMomentum = new Vec3(0, 0, 0);
-
   const handleDown = (event) => {
     // Disables link dragging that occurs when spinning.
     event.preventDefault();
 
     mouse.down = true;
 
-    angularMomentum = new Vec3(0, 0, 0);
+    velocity = new Vec3(0, 0, 0);
   };
 
   document.addEventListener("mousedown", handleDown);
@@ -172,24 +171,24 @@ const orientation = {
     const delta = (timestamp - lastUpdate) / 1000;
     lastUpdate = timestamp;
 
-    const axis = new Vec3(angularMomentum.x, angularMomentum.y, angularMomentum.z);
-    const omega = angularMomentum.length();
+    const axis = new Vec3(velocity.x, velocity.y, velocity.z);
+    const omega = velocity.length();
     const decay = Math.exp(-delta * friction);
 
     const effectiveDelta = friction > 0 ? (1 - decay) / friction : delta;
 
     let theta = effectiveDelta * omega;
 
-    angularMomentum.x *= decay;
-    angularMomentum.y *= decay;
-    angularMomentum.z *= decay;
+    velocity.x *= decay;
+    velocity.y *= decay;
+    velocity.z *= decay;
 
-    if (friction > 0 && angularMomentum.length() < 0.00001) {
-      theta += angularMomentum.length() / friction;
+    if (friction > 0 && velocity.length() < 0.00001) {
+      theta += velocity.length() / friction;
 
-      angularMomentum.x = 0;
-      angularMomentum.y = 0;
-      angularMomentum.z = 0;
+      velocity.x = 0;
+      velocity.y = 0;
+      velocity.z = 0;
     }
 
     axis.normalize();
