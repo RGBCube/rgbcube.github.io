@@ -97,14 +97,9 @@ const orientation = {
     previous: null,
   };
 
+
   document.addEventListener("mouseup", () => {
     mouse.down = false;
-  });
-
-  document.addEventListener("mousedown", (event) => {
-    // Disables link dragging that occurs when spinning.
-    event.preventDefault();
-    mouse.down = true;
   });
 
   document.addEventListener("mousemove", (event) => {
@@ -127,4 +122,50 @@ const orientation = {
 
     orientation.set(Quat.mul(rotation, orientation.get()));
   });
+
+  let angularMomentum = new Vec3(0, 0, 0);
+
+  document.addEventListener("mousedown", (event) => {
+    // Disables link dragging that occurs when spinning.
+    event.preventDefault();
+
+    mouse.down = true;
+
+    angularMomentum = new Vec3(0, 0, 0);
+  });
+
+  let lastUpdate = 0;
+
+  const updateFrame = (timestamp) => {
+    if (lastUpdate == 0) lastUpdate = timestamp;
+
+    const delta = (timestamp - lastUpdate) / 1000;
+    lastUpdate = timestamp;
+
+    const axis = angularMomentum;
+    const omega = angularMomentum.length();
+    const decay = Math.exp(-delta * friction);
+
+    const effectiveDelta = friction > 0 ? (1 - decay) / friction : delta;
+
+    let theta = effectiveDelta * omega;
+
+    angularMomentum.x *= decay;
+    angularMomentum.y *= decay;
+    angularMomentum.z *= decay;
+
+    if (friction > 0 && angularMomentum.length() < 0.00001) {
+      theta += angularMomentum.length() / friction;
+
+      angularMomentum.x = 0;
+      angularMomentum.y = 0;
+      angularMomentum.z = 0;
+    }
+
+    if (!mouse.down) orientation.set(Quat.mul(Quat.fromAngleAxis(theta, axis), orientation.get()));
+
+    requestAnimationFrame(updateFrame);
+  };
+
+  updateFrame(0);
 })();
