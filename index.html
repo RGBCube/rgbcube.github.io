@@ -24,84 +24,12 @@
 
   <meta property="og:url" content="https://rgbcube.github.io/" />
   <link rel="canonical" href="https://rgbcube.github.io/">
+
+  <link href="/cube.css" rel="stylesheet">
 </head>
 
 <body>
   <style>
-    @font-face {
-      font-family: "Bai Jamjuree";
-      font-weight: 700;
-      src: url(BaiJamjuree700.woff2) format(woff2);
-    }
-
-    body,
-    html {
-      height: 100%;
-      margin: 0;
-    }
-
-    html {
-      background-color: #000000;
-      font-family: "Bai Jamjuree", sans;
-      font-size: 450%;
-    }
-
-    a {
-      color: #000000;
-      text-decoration-line: none;
-    }
-
-    .frame {
-      background-color: #FFFFFF;
-
-      width: min-content;
-
-      padding: 0 .3em;
-      border-radius: 1em;
-
-      user-select: none;
-    }
-
-    .frame:hover {
-      background-color: #FFFF00;
-    }
-
-    .scene {
-      height: 100%;
-      width: 100%;
-      perspective: 15em;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cube {
-      height: 5em;
-      width: 5em;
-
-      position: relative;
-
-      transform: translateZ(-2.5em);
-      transform-style: preserve-3d;
-    }
-
-    .face {
-      background-size: cover;
-      background-position: center;
-
-      width: 5em;
-      height: 5em;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      position: absolute;
-    }
-
     .face::after {
       z-index: -1;
       content: "";
@@ -111,7 +39,6 @@
     }
 
     .front {
-      transform: rotateY(0deg) translateZ(2.5em);
       background: linear-gradient(to bottom, cyan, blue);
     }
 
@@ -121,7 +48,6 @@
     }
 
     .top {
-      transform: rotateX(90deg) translateZ(2.5em);
       background: linear-gradient(to bottom, lime, cyan);
     }
 
@@ -131,7 +57,6 @@
     }
 
     .back {
-      transform: rotateY(180deg) translateZ(2.5em);
       background: linear-gradient(to bottom, yellow, red);
     }
 
@@ -141,7 +66,6 @@
     }
 
     .bottom {
-      transform: rotateX(-90deg) translateZ(2.5em);
       background: linear-gradient(to bottom, blue, black);
     }
 
@@ -151,7 +75,6 @@
     }
 
     .right {
-      transform: rotateY(90deg) translateZ(2.5em);
       background: linear-gradient(to bottom, white, magenta);
     }
 
@@ -161,7 +84,6 @@
     }
 
     .left {
-      transform: rotateY(-90deg) translateZ(2.5em);
       background: linear-gradient(to bottom, lime, black);
     }
 
