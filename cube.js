@@ -162,7 +162,9 @@ const orientation = {
       angularMomentum.z = 0;
     }
 
-    if (!mouse.down) orientation.set(Quat.mul(Quat.fromAngleAxis(theta, axis), orientation.get()));
+    const rotation = Quat.fromAngleAxis(theta, axis);
+
+    if (!mouse.down) orientation.set(Quat.mul(rotation, orientation.get()));
 
     requestAnimationFrame(updateFrame);
   };
