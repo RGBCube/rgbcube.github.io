@@ -10,7 +10,7 @@ const FACES: [&str; 6] = ["front", "top", "back", "bottom", "right", "left"];
 pub fn create(styling: &str, faces: [Markup; 6]) -> Markup {
     page::create(
         html! {
-            link href="cube.css" rel="stylesheet";
+            link href="cube.min.css" rel="stylesheet";
         },
         html! {
             style {
@@ -26,6 +26,8 @@ pub fn create(styling: &str, faces: [Markup; 6]) -> Markup {
                     }
                 }
             }
+
+            script src="cube.min.js" {}
         },
     )
 }

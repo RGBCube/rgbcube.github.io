@@ -7,4 +7,4 @@ macro_rules! import {
     };
 }
 
-import! { index }
+import! { _404, index }

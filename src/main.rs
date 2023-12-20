@@ -1,5 +1,6 @@
 mod constants;
 mod cube;
+mod minify;
 mod page;
 mod pages;
 

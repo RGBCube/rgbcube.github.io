@@ -1,1 +1,1 @@
-pub const URL: &'static str = "https://rgbcube.github.io/";
+pub const URL: &str = "https://rgbcube.github.io/";

@@ -178,6 +178,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "embed-file"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "11c84540ea27680af34e655a36b1b3d362f2a1d2088db07760358a01fa9546ad"
+
+[[package]]
 name = "env_logger"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -812,6 +818,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "axum",
+ "embed-file",
  "env_logger",
  "log",
  "maud",
