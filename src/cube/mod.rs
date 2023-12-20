@@ -1,20 +1,26 @@
+use embed_file::embed_string as embed;
 use maud::{
     html,
     Markup,
 };
 
-use crate::page;
+use crate::{
+    minify,
+    page,
+};
 
 const FACES: [&str; 6] = ["front", "top", "back", "bottom", "right", "left"];
 
-pub fn create(styling: &str, faces: [Markup; 6]) -> Markup {
+pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
     page::create(
         html! {
-            link href="cube.min.css" rel="stylesheet";
+            style {
+                (minify::css(embed!("cube.css")))
+            }
         },
         html! {
             style {
-                (styling)
+                (styling.as_ref())
             }
 
             div class="scene" {
@@ -27,7 +33,9 @@ pub fn create(styling: &str, faces: [Markup; 6]) -> Markup {
                 }
             }
 
-            script src="cube.min.js" {}
+            script {
+                (minify::js(embed!("cube.js")))
+            }
         },
     )
 }

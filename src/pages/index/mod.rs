@@ -11,7 +11,7 @@ use crate::{
 
 pub async fn generate() -> Markup {
     cube::create(
-        minify::css(embed!("index.css").as_ref()).as_str(),
+        minify::css(embed!("index.css")),
         [
             html! {
               a href="contact" {

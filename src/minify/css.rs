@@ -1,13 +1,13 @@
 const SPECIAL_CHARS: [char; 8] = ['{', '}', ':', ';', ' ', '\n', '!', '>'];
 
 // Taken from https://github.com/amgarrett09/rust-css-minifier/blob/master/src/minify/mod.rs.
-pub fn css(input: &str) -> String {
+pub fn css<S: AsRef<str>>(input: S) -> String {
     let mut last_char: Vec<char> = " ".chars().collect();
     let mut output = Vec::new();
 
     let mut inside_comment = false;
 
-    for c in input.chars() {
+    for c in input.as_ref().chars() {
         // We're in a comment if we find '/*'
         if !inside_comment && c == '*' && last_char[0] == '/' {
             inside_comment = true;

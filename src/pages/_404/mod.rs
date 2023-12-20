@@ -13,7 +13,7 @@ use crate::{
 
 pub async fn generate() -> Markup {
     cube::create(
-        minify::css(embed!("404.css").as_ref()).as_str(),
+        minify::css(embed!("404.css")),
         array::from_fn(|_| {
             (html! {
                div class="frame" {}
