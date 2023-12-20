@@ -16,7 +16,7 @@ pub async fn generate() -> Markup {
         minify::css(embed!("404.css")),
         array::from_fn(|_| {
             (html! {
-               div class="frame" {}
+               div class="frame" { "404" }
                div class="square black" {}
                div class="square magenta" {}
                div class="square magenta" {}

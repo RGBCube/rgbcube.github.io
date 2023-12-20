@@ -2,6 +2,7 @@ use embed_file::embed_string as embed;
 use maud::{
     html,
     Markup,
+    PreEscaped,
 };
 
 use crate::{
@@ -15,12 +16,12 @@ pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
     page::create(
         html! {
             style {
-                (minify::css(embed!("cube.css")))
+                (PreEscaped(minify::css(embed!("cube.css"))))
             }
         },
         html! {
             style {
-                (styling.as_ref())
+                (PreEscaped(styling.as_ref()))
             }
 
             div class="scene" {
@@ -34,7 +35,7 @@ pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
             }
 
             script {
-                (minify::js(embed!("cube.js")))
+                (PreEscaped(minify::js(embed!("cube.js"))))
             }
         },
     )
