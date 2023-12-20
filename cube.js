@@ -8,7 +8,7 @@ class Vec3 {
   }
 
   static zero() {
-    return new Vec(0, 0, 0);
+    return new Vec3(0, 0, 0);
   }
 
   length() {
@@ -90,7 +90,7 @@ class Quat {
 
 let friction = 3;
 let sensitivity = 0.01;
-let velocity = new Vec3(0, 0, 0);
+let velocity = Vec3.zero();
 
 const orientation = {
   __cube: document.querySelector(".cube"),
@@ -115,7 +115,7 @@ const orientation = {
     previous: null,
   };
 
-  let impulseThisFrame = new Vec3(0, 0, 0);
+  let impulseThisFrame = Vec3.zero();
 
   const handleUp = () => {
     mouse.down = false;
@@ -130,7 +130,7 @@ const orientation = {
 
     mouse.down = true;
 
-    velocity = new Vec3(0, 0, 0);
+    velocity = Vec3.zero();
   };
 
   document.addEventListener("mousedown", handleDown);
@@ -187,7 +187,7 @@ const orientation = {
 
     if (mouse.down) {
       velocity = impulseThisFrame.scale(1 / delta);
-      impulseThisFrame = new Vec3(0, 0, 0);
+      impulseThisFrame = Vec3.zero();
     } else {
       const decay = Math.exp(-delta * friction);
 
