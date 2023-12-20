@@ -12,12 +12,14 @@
 !.gitignore
 
 !Cargo.lock
+!flake.lock
 
 !*.css
 !*.gif
 !*.html
 !*.js
 !*.md
+!*.nix
 !*.rs
 !*.toml
 !*.woff2

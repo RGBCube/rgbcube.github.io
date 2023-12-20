@@ -1,4 +1,4 @@
-macro_rules! import {
+macro_rules! import_page {
     ($($ident:ident),*) => {
         $(
             mod $ident;
@@ -7,4 +7,14 @@ macro_rules! import {
     };
 }
 
-import! { _404, index }
+macro_rules! import_router {
+    ($($ident:ident),*) => {
+        $(
+            mod $ident;
+            pub use $ident::router as $ident;
+        )*
+    };
+}
+
+import_page! { _404, index }
+import_router! { assets }

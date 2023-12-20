@@ -13,7 +13,6 @@ use constants::*;
 use env_logger::Target;
 use log::LevelFilter;
 use tokio::net::TcpListener;
-use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -23,7 +22,7 @@ async fn main() -> anyhow::Result<()> {
         .init();
 
     let app = Router::new()
-        .nest_service("/assets", ServeDir::new("assets")) // TODO: Embed it all.
+        .nest_service("/assets", pages::assets())
         .route("/", get(pages::index))
         .fallback(pages::_404);
 

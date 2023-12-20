@@ -9,15 +9,17 @@ repositoty  = "https://github.com/RGBCube/rgbcube.github.io"
 edition     = "2021"
 
 [dependencies]
-anyhow     = "1.0.75"
-axum       = "0.7.2"
-embed-file = "0.1.0"
-env_logger = "0.10.1"
-log        = "0.4.20"
-maud       = { git = "https://github.com/vidhanio/maud", branch = "patch-1", features = [ "axum" ] }
-minify-js  = "0.5.6"
-tokio      = { version = "1.35.1", features = [ "full" ] }
-tower-http = { version = "0.5.0", features = [ "fs", "trace" ] }
+anyhow       = "1.0.75"
+axum         = "0.7.2"
+dashmap      = "5.5.3"
+embed-file   = "0.1.0"
+env_logger   = "0.10.1"
+log          = "0.4.20"
+maud         = { git = "https://github.com/vidhanio/maud", branch = "patch-1", features = [ "axum" ] }
+minify-js    = "0.5.6"
+stringreader = "0.1.1"
+tar          = "0.4.40"
+tokio        = { version = "1.35.1", features = [ "full" ] }
 
 [build]
 incremental = true

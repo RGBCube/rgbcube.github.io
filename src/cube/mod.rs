@@ -21,7 +21,7 @@ pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
         },
         html! {
             style {
-                (PreEscaped(styling.as_ref()))
+                (PreEscaped(&styling))
             }
 
             div class="scene" {
