@@ -208,7 +208,8 @@ const orientation = {
       }
 
       if (window.performance.now() - mouse.lastMove > 10_000) {
-        velocity = new Vec3(1, 1, -1);
+        const impulse = new Vec3(1, 1, -1);
+        velocity = Vec3.sum(impulse.scale(effectiveDelta * 3), velocity);
       }
 
       const axis = new Vec3(velocity.x, velocity.y, velocity.z)
