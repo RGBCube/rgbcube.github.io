@@ -46,10 +46,6 @@ a {
   user-select: none;
 }
 
-.frame:hover {
-  background-color: #FFFF00;
-}
-
 .scene {
   height: 100%;
   width: 100%;
