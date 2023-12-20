@@ -1,0 +1,21 @@
+[package]
+name        = "site"
+description = "RGBCube's homepage."
+authors     = [ "RGBCube" ]
+license     = "GPL"
+version     = "0.1.0"
+homepage    = "https://rgbcube.github.io"
+repositoty  = "https://github.com/RGBCube/rgbcube.github.io"
+edition     = "2021"
+
+[dependencies]
+anyhow     = "1.0.75"
+axum       = "0.7.2"
+env_logger = "0.10.1"
+log        = "0.4.20"
+maud       = { git = "https://github.com/vidhanio/maud", branch = "patch-1", features = [ "axum" ] }
+minify-js  = "0.5.6"
+tokio      = { version = "1.35.1", features = [ "full" ] }
+
+[build]
+incremental = true

@@ -1,10 +1,19 @@
 *
 
+!assets/
+
+!src/
+!src/pages/
+
 !.gitignore
+
+!Cargo.lock
 
 !*.css
 !*.gif
 !*.html
 !*.js
 !*.md
+!*.rs
+!*.toml
 !*.woff2
