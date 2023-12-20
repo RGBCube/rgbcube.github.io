@@ -21,7 +21,9 @@ async fn main() -> anyhow::Result<()> {
         .target(Target::Stdout)
         .init();
 
-    let app = Router::new().route("/", get(pages::index));
+    let app = Router::new()
+        .route("/", get(pages::index))
+        .fallback(pages::_404);
 
     let listener = TcpListener::bind("0.0.0.0:80")
         .await
