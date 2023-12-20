@@ -111,7 +111,7 @@ const orientation = {
 {
   const mouse = {
     down: false,
-    lastMove: -10_000,
+    lastMove: -10000,
     previous: null,
   };
 
@@ -207,7 +207,7 @@ const orientation = {
         velocity.z = 0;
       }
 
-      if (window.performance.now() - mouse.lastMove > 10_000) {
+      if (window.performance.now() - mouse.lastMove > 10000) {
         const impulse = new Vec3(1, 1, -1);
         velocity = Vec3.sum(impulse.scale(effectiveDelta * 3), velocity);
       }
