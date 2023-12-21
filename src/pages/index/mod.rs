@@ -1,4 +1,3 @@
-use embed_file::embed_string as embed;
 use maud::{
     html,
     Markup,
@@ -11,7 +10,7 @@ use crate::{
 
 pub async fn generate() -> Markup {
     cube::create(
-        minify::css(embed!("index.css")),
+        minify::css(embed::string!("index.css")),
         [
             html! {
               a href="contact" {

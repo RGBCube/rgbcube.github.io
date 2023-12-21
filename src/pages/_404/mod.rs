@@ -1,6 +1,5 @@
 use std::array;
 
-use embed_file::embed_string as embed;
 use maud::{
     html,
     Markup,
@@ -13,7 +12,7 @@ use crate::{
 
 pub async fn generate() -> Markup {
     cube::create(
-        minify::css(embed!("404.css")),
+        minify::css(embed::string!("404.css")),
         array::from_fn(|_| {
             (html! {
                div class="frame" { "404" }

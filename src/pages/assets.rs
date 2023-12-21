@@ -1,16 +1,17 @@
-use std::io::Read;
+use std::io::{
+    Cursor,
+    Read,
+};
 
 use axum::Router;
 use dashmap::DashMap;
-use embed_file::embed_string as embed;
-use stringreader::StringReader;
 use tar::Archive;
 
 pub fn router() -> Router {
     let app = Router::new();
 
-    let tar_contents = embed!("assets.tar");
-    let mut archive = Archive::new(StringReader::new(&tar_contents));
+    let tar_contents = embed::bytes!("../../assets.tar");
+    let mut archive = Archive::new(Cursor::new(tar_contents.as_ref()));
     let archive_map: DashMap<String, Vec<u8>> = DashMap::new();
 
     for entry in archive.entries().unwrap() {

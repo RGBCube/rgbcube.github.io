@@ -1,4 +1,3 @@
-use embed_file::embed_string as embed;
 use maud::{
     html,
     Markup,
@@ -16,7 +15,7 @@ pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
     page::create(
         html! {
             style {
-                (PreEscaped(minify::css(embed!("cube.css"))))
+                (PreEscaped(minify::css(embed::string!("cube.css"))))
             }
         },
         html! {
@@ -35,7 +34,7 @@ pub fn create<S: AsRef<str>>(styling: S, faces: [Markup; 6]) -> Markup {
             }
 
             script {
-                (PreEscaped(minify::js(embed!("cube.js"))))
+                (PreEscaped(minify::js(embed::string!("cube.js"))))
             }
         },
     )
