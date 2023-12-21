@@ -35,7 +35,9 @@
       packageFun  = import ./Cargo.nix;
     };
   in rec {
-    devShells.default = rustPackages.workspaceShell;
+    devShells.default = rustPackages.workspaceShell {
+      packages = [ cargo2nix.packages.${system}.default ];
+    };
 
     packages.site    = rustPackages.workspace.site {};
     packages.default = packages.site;

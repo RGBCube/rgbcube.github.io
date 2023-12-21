@@ -24,7 +24,7 @@ args@{
   ignoreLockHash,
 }:
 let
-  nixifiedLockHash = "3b6cdcff966e35d632c6403eb66fc4961b8ead162d7cf3f5e71605db5d6e1a7c";
+  nixifiedLockHash = "f6add6ca95c1664c93b1f71131f01989e4b1063411aefa0d55a6b9352cb7e5a0";
   workspaceSrc = if args.workspaceSrc == null then ./. else args.workspaceSrc;
   currentLockHash = builtins.hashFile "sha256" (workspaceSrc + /Cargo.lock);
   lockHashIgnored = if ignoreLockHash
@@ -312,7 +312,7 @@ in
       url = https://github.com/RGBCube/embed-rs;
       name = "embed";
       version = "0.1.0";
-      rev = "2dd76f64949dd983a2e6e7752633c9dcb2330ef6";};
+      rev = "6aba0ec76d3703dd96e5c8453d4d05cec95fdd9f";};
     dependencies = {
       include_dir = (rustPackages."registry+https://github.com/rust-lang/crates.io-index".include_dir."0.7.3" { inherit profileName; }).out;
     };

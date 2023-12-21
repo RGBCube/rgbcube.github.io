@@ -193,7 +193,7 @@ dependencies = [
 [[package]]
 name = "embed"
 version = "0.1.0"
-source = "git+https://github.com/RGBCube/embed-rs#2dd76f64949dd983a2e6e7752633c9dcb2330ef6"
+source = "git+https://github.com/RGBCube/embed-rs#6aba0ec76d3703dd96e5c8453d4d05cec95fdd9f"
 dependencies = [
  "include_dir",
 ]
