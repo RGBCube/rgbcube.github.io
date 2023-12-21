@@ -25,7 +25,5 @@ pub fn router() -> Router {
         archive_map.insert(path, contents);
     }
 
-    println!("{archive_map:?}");
-
     app
 }
