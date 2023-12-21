@@ -29,7 +29,7 @@
     };
 
     rustPackages = pkgs.rustBuilder.makePackageSet {
-      rustVersion = "1.74.1";
+      rustVersion = "1.73.0";
       rustChannel = "stable";
       rustProfile = "minimal";
       packageFun  = import ./Cargo.nix;
@@ -37,7 +37,7 @@
   in rec {
     devShells.default = rustPackages.workspaceShell;
 
-    packages.site = rustPackages.workspace.site {};
+    packages.site    = rustPackages.workspace.site {};
     packages.default = packages.site;
   });
 }
