@@ -9,6 +9,7 @@
 !src/pages/_404/
 !src/pages/index/
 
+!.gitattributes
 !.gitignore
 
 !Cargo.lock
