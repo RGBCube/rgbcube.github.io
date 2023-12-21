@@ -1,6 +1,10 @@
 # RGBCube's Homepage
 
-This is my homepage. Nothing to see here right now.
+## Running
+
+Simply run `sudo nix run`, nothing else.
+
+The server will be ran on `0.0.0.0:80`.
 
 ## License
 
