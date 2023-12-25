@@ -29,8 +29,8 @@
     };
 
     rustPackages = pkgs.rustBuilder.makePackageSet {
-      rustVersion = "1.73.0";
-      rustChannel = "stable";
+      rustVersion = "1.76.0";
+      rustChannel = "nightly";
       rustProfile = "minimal";
       packageFun  = import ./Cargo.nix;
     };
