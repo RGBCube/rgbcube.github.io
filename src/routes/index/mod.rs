@@ -1,14 +1,17 @@
+use std::sync::LazyLock;
+
 use maud::{
     html,
     Markup,
 };
+use warp::Filter;
 
 use crate::{
     cube,
     minify,
 };
 
-pub async fn generate() -> Markup {
+static PAGE: LazyLock<Markup> = LazyLock::new(|| {
     cube::create(
         minify::css(embed::string!("index.css")),
         [
@@ -32,4 +35,8 @@ pub async fn generate() -> Markup {
             html! {},
         ],
     )
+});
+
+pub fn filter() -> impl Filter {
+    warp::any().map(|| &*PAGE)
 }

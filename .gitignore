@@ -5,9 +5,9 @@
 !src/
 !src/cube/
 !src/minify/
-!src/pages/
-!src/pages/_404/
-!src/pages/index/
+!src/routes/
+!src/routes/_404/
+!src/routes/index/
 
 !.gitattributes
 !.gitignore

@@ -1,18 +1,14 @@
+#![feature(lazy_cell)]
+
 mod constants;
 mod cube;
 mod minify;
 mod page;
-mod pages;
+mod routes;
 
-use anyhow::Context;
-use axum::{
-    routing::get,
-    Router,
-};
 use constants::*;
 use env_logger::Target;
 use log::LevelFilter;
-use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -21,18 +17,7 @@ async fn main() -> anyhow::Result<()> {
         .target(Target::Stdout)
         .init();
 
-    let app = Router::new()
-        .nest_service("/assets", pages::assets())
-        .route("/", get(pages::index))
-        .fallback(pages::_404);
-
-    let listener = TcpListener::bind("0.0.0.0:80")
-        .await
-        .with_context(|| "Failed to bind to 0.0.0.0:80")?;
-
-    axum::serve(listener, app)
-        .await
-        .with_context(|| "Server crashed")?;
+    warp::serve(routes::filter()).run(([0, 0, 0, 0], 80)).await;
 
     Ok(())
 }
