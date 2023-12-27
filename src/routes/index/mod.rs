@@ -1,29 +1,33 @@
 use std::sync::LazyLock;
 
-use maud::{
-    html,
-    Markup,
+use maud::html;
+use warp::{
+    reject::Rejection,
+    reply::{
+        self,
+        Html,
+    },
+    Filter,
 };
-use warp::Filter;
 
 use crate::{
     cube,
     minify,
 };
 
-static PAGE: LazyLock<Markup> = LazyLock::new(|| {
+static PAGE: LazyLock<String> = LazyLock::new(|| {
     cube::create(
         minify::css(embed::string!("index.css")),
         [
             html! {
-              a href="contact" {
+              a href="/contact" {
                 div class="frame" {
                   "contact"
                 }
               }
             },
             html! {
-              a href="github" {
+              a href="/github" {
                 div class="frame" {
                   "github"
                 }
@@ -35,8 +39,9 @@ static PAGE: LazyLock<Markup> = LazyLock::new(|| {
             html! {},
         ],
     )
+    .into_string()
 });
 
-pub fn filter() -> impl Filter {
-    warp::any().map(|| &*PAGE)
+pub fn filter() -> impl Filter<Extract = (Html<&'static str>,), Error = Rejection> + Clone {
+    warp::path!().map(|| reply::html(PAGE.as_str()))
 }

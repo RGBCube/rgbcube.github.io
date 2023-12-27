@@ -9,6 +9,8 @@ mod routes;
 use constants::*;
 use env_logger::Target;
 use log::LevelFilter;
+use routes::*;
+use warp::Filter;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -17,7 +19,9 @@ async fn main() -> anyhow::Result<()> {
         .target(Target::Stdout)
         .init();
 
-    warp::serve(routes::filter()).run(([0, 0, 0, 0], 80)).await;
+    let routes = index::filter().or(assets::filter()).or(_404::filter());
+
+    warp::serve(routes).run(([0, 0, 0, 0], 80)).await;
 
     Ok(())
 }

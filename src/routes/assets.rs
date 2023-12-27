@@ -9,11 +9,12 @@ use std::{
 
 use tar::Archive;
 use warp::{
-    filters::path::FullPath,
+    filters::fs::File,
+    reject::Rejection,
     Filter,
 };
 
-static ASSETS: LazyLock<HashMap<String, Vec<u8>>> = LazyLock::new(|| {
+static _ASSETS: LazyLock<HashMap<String, Vec<u8>>> = LazyLock::new(|| {
     let contents = embed::bytes!("../../assets.tar");
 
     let mut archive = Archive::new(Cursor::new(contents.as_ref()));
@@ -38,16 +39,6 @@ static ASSETS: LazyLock<HashMap<String, Vec<u8>>> = LazyLock::new(|| {
     assets
 });
 
-pub fn filter() -> impl Filter {
-    warp::path!("assets" / ..)
-        .and(warp::path::full())
-        .map(|path: FullPath| {
-            println!("{}", path.as_str());
-
-            if let Some(asset) = ASSETS.get(path.as_str()) {
-            }
-            else {
-                warp::reject::not_found()
-            }
-        })
+pub fn filter() -> impl Filter<Extract = (File,), Error = Rejection> + Clone {
+    warp::path("assets").and(warp::fs::dir("assets"))
 }

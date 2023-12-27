@@ -1,20 +1,24 @@
 use std::{
     array,
+    convert::Infallible,
     sync::LazyLock,
 };
 
-use maud::{
-    html,
-    Markup,
+use maud::html;
+use warp::{
+    reply::{
+        self,
+        Html,
+    },
+    Filter,
 };
-use warp::Filter;
 
 use crate::{
     cube,
     minify,
 };
 
-static PAGE: LazyLock<Markup> = LazyLock::new(|| {
+static PAGE: LazyLock<String> = LazyLock::new(|| {
     cube::create(
         minify::css(embed::string!("404.css")),
         array::from_fn(|_| {
@@ -28,8 +32,9 @@ static PAGE: LazyLock<Markup> = LazyLock::new(|| {
             .clone()
         }),
     )
+    .into_string()
 });
 
-pub fn filter() -> impl Filter {
-    warp::any().map(|| &*PAGE)
+pub fn filter() -> impl Filter<Extract = (Html<&'static str>,), Error = Infallible> + Clone {
+    warp::any().map(|| reply::html(PAGE.as_str()))
 }

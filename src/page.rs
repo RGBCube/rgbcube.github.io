@@ -45,7 +45,7 @@ pub fn create(head: Markup, body: Markup) -> Markup {
             (pname("description", description))
             (property("og:description", description))
 
-            link rel="icon" href="assets/icon.gif" type="image/gif";
+            link rel="icon" href="/assets/icon.gif" type="image/gif";
 
             (property("og:image", "thumbnail.png"))
             (property("og:image:type", "image/png"))
