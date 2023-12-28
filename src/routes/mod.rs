@@ -1,3 +1,2 @@
-pub mod _404;
-pub mod assets;
-pub mod index;
+pub(crate) mod index;
+pub(crate) mod not_found;

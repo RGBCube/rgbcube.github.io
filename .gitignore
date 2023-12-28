@@ -1,13 +1,11 @@
 *
 
-!assets/
-
 !src/
-!src/cube/
-!src/minify/
+!src/page/
+!src/page/cube/
 !src/routes/
-!src/routes/_404/
 !src/routes/index/
+!src/routes/not_found/
 
 !.gitattributes
 !.gitignore

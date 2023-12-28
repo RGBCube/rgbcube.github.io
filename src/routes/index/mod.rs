@@ -1,23 +1,18 @@
 use std::sync::LazyLock;
 
-use maud::html;
-use warp::{
-    reject::Rejection,
-    reply::{
-        self,
-        Html,
-    },
-    Filter,
+use maud::{
+    html,
+    Markup,
 };
 
 use crate::{
-    cube,
-    minify,
+    asset,
+    page::cube,
 };
 
-static PAGE: LazyLock<String> = LazyLock::new(|| {
+static PAGE: LazyLock<BoxedFuture<Markup>>> = LazyLock::new(|| {
     cube::create(
-        minify::css(embed::string!("index.css")),
+        &asset!("index.css"),
         [
             html! {
               a href="/contact" {
@@ -39,9 +34,13 @@ static PAGE: LazyLock<String> = LazyLock::new(|| {
             html! {},
         ],
     )
-    .into_string()
 });
 
-pub fn filter() -> impl Filter<Extract = (Html<&'static str>,), Error = Rejection> + Clone {
-    warp::path!().map(|| reply::html(PAGE.as_str()))
+pub fn init() {
+    let _ = &*PAGE;
+}
+
+pub async fn handler() -> &'static str {
+    // &*PAGE
+    "asd"
 }

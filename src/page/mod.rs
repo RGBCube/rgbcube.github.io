@@ -1,29 +1,32 @@
+pub mod cube;
+
+use std::sync::LazyLock;
+
+use cargo_toml::Manifest;
 use maud::{
     html,
     Markup,
-    PreEscaped,
     DOCTYPE,
 };
 
+use crate::asset;
+
+static MANIFEST: LazyLock<Manifest> =
+    LazyLock::new(|| Manifest::from_str(&embed::string!("../../Cargo.toml")).unwrap());
+
 fn property(name: &str, content: &str) -> Markup {
-    PreEscaped(
-        html! {
-            meta property=(name) content=(content);
-        }
-        .into_string(),
-    )
+    html! {
+        meta property=(name) content=(content);
+    }
 }
 
 fn pname(name: &str, content: &str) -> Markup {
-    PreEscaped(
-        html! {
-            meta name=(name) content=(content);
-        }
-        .into_string(),
-    )
+    html! {
+        meta name=(name) content=(content);
+    }
 }
 
-pub fn create(head: Markup, body: Markup) -> Markup {
+pub(crate) fn create(head: Markup, body: Markup) -> Markup {
     html! {
         (DOCTYPE)
 
@@ -41,25 +44,26 @@ pub fn create(head: Markup, body: Markup) -> Markup {
             (property("og:site_name", name))
             (property("og:title", name))
 
-            @let description = "The official website and link portal of RGBCube and his work.";
+            @let description = MANIFEST.package.as_ref().unwrap().description().unwrap();
             (pname("description", description))
             (property("og:description", description))
 
-            link rel="icon" href="/assets/icon.gif" type="image/gif";
+            link rel="icon" href=(asset!("icon.gif")) type="image/gif";
 
             (property("og:image", "thumbnail.png"))
             (property("og:image:type", "image/png"))
             (property("og:image:height", "1080"))
             (property("og:image:width", "600"))
 
-            (property("og:url", crate::URL))
-            link rel="canonical" href=(crate::URL);
+            @let url = MANIFEST.package.as_ref().unwrap().homepage().unwrap();
+            (property("og:url", url))
+            link rel="canonical" href=(url);
 
-            (PreEscaped(head.into_string()))
+            (head)
         }
 
         body {
-            (PreEscaped(body.into_string()))
+            (body)
         }
     }
 }
