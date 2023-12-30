@@ -1,5 +1,4 @@
 condense_wildcard_suffixes   = true
-control_brace_style          = "ClosingNextLine"
 enum_discrim_align_threshold = 25
 force_explicit_abi           = false
 force_multiline_blocks       = true
