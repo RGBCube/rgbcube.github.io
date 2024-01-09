@@ -1,24 +1,6 @@
 *
 
-!src/
-!src/page/
-!src/page/cube/
-!src/routes/
-!src/routes/index/
-!src/routes/not_found/
-
-!.gitattributes
 !.gitignore
 
-!Cargo.lock
-!flake.lock
-
-!*.css
-!*.gif
 !*.html
-!*.js
 !*.md
-!*.nix
-!*.rs
-!*.toml
-!*.woff2
